@@ -19,4 +19,5 @@ include:
   * Chrony massages samples over a longer time horizon and prints the calcualted offset in
     statistics.log whereas NTP prints samples from a much shorter time horizon (possibly before
     massaging, but I didn't dig deep enough) in peerstats. We could pull from measurements.log
-    which may be more comparable to NTPd peerstats, but its missing some fields which ntpviz wants.
+    which may be more comparable to NTPd peerstats, but it doesn't print the jitter (as a single
+    measurement doesn't, itself, have jitter).
