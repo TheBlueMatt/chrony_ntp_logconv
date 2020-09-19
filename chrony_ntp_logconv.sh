@@ -18,6 +18,10 @@ out = None
 with open("/var/log/chrony/tracking.log") as tracking:
     line = tracking.readline()
     f = ""
+    # Chrony can sometimes print times out of order, which on day boundaries can result
+    # in us clearing logs completely, so we track which days we've covered and append
+    # if we see a day for a second time.
+    suffixes = set()
     while line:
         if line.startswith("   ") or line.startswith("====="):
             line = tracking.readline()
@@ -33,7 +37,11 @@ with open("/var/log/chrony/tracking.log") as tracking:
             f = logsuf
             if out is not None:
                 out.close()
-            out = open("/var/log/ntpstats/conv/loopstats." + logsuf, "w")
+            if f in suffixes:
+                out = open("/var/log/ntpstats/conv/loopstats." + logsuf, "a")
+            else:
+                out = open("/var/log/ntpstats/conv/loopstats." + logsuf, "w")
+                suffixes.add(f)
         # Bogus "clock discipline time constant"
         # Note that we don't have Allan Devitaion for freq, only "error bounds on the frequency", but we use that anyway
         out.write("%d %d %.9f %.3f %.9f %.9f 6\n" % (mjd, secs, -float(s[6]), -float(s[4]), float(s[9]), float(s[5])))
@@ -43,6 +51,7 @@ with open("/var/log/chrony/tracking.log") as tracking:
 with open("/var/log/chrony/statistics.log") as stats:
     line = stats.readline()
     f = ""
+    suffixes = set()
     while line:
         if line.startswith("   ") or line.startswith("====="):
             line = stats.readline()
@@ -56,7 +65,13 @@ with open("/var/log/chrony/statistics.log") as stats:
 
         if f != logsuf:
             f = logsuf
-            out = open("/var/log/ntpstats/conv/peerstats." + logsuf, "w")
+            if out is not None:
+                out.close()
+            if f in suffixes:
+                out = open("/var/log/ntpstats/conv/peerstats." + logsuf, "a")
+            else:
+                out = open("/var/log/ntpstats/conv/peerstats." + logsuf, "a")
+                suffixes.add(f)
 
         src = s[2]
         # These are my refclocks. You should fill in your own conversions here.
