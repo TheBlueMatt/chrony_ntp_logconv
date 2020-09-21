@@ -60,19 +60,19 @@ for f in os.listdir("/var/log/chrony"):
             elif out_ty == "peerstats":
                 src = s[2]
 
-				# These are my refclocks. You should fill in your own conversions here.
-				if src == "NME0":
-					src = "127.127.46.0"
-				elif src == "NME1":
-					src = "127.127.46.1"
-				elif src == "NME2":
-					src = "127.127.46.2"
-				elif src == "GPS0":
-					src = "127.127.46.128"
-				elif src == "GPS1":
-					src = "127.127.46.129"
-				elif src == "GPS2":
-					src = "127.127.46.130"
+                # These are my refclocks. You should fill in your own conversions here.
+                if src == "NME0":
+                    src = "127.127.46.0"
+                elif src == "NME1":
+                    src = "127.127.46.1"
+                elif src == "NME2":
+                    src = "127.127.46.2"
+                elif src == "GPS0":
+                    src = "127.127.46.128"
+                elif src == "GPS1":
+                    src = "127.127.46.129"
+                elif src == "GPS2":
+                    src = "127.127.46.130"
 
                 # Bogus "status" and, sadly, missing "delay" (which is 0 here, its only in rawstats)
                 out.write("%d %d %s 9014 %.9f 0 %.9f %.9f\n" % (mjd, secs, src, -float(s[4]), float(s[5]), float(s[3])))
