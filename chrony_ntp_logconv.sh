@@ -62,17 +62,25 @@ for f in os.listdir("/var/log/chrony"):
 
                 # These are my refclocks. You should fill in your own conversions here.
                 if src == "NME0":
-                    src = "127.127.46.0"
+                    src = "127.127.20.0"
                 elif src == "NME1":
-                    src = "127.127.46.1"
+                    src = "127.127.20.1"
                 elif src == "NME2":
-                    src = "127.127.46.2"
+                    src = "127.127.20.2"
+                elif src == "NME2":
+                    src = "127.127.20.3"
                 elif src == "GPS0":
-                    src = "127.127.46.128"
+                    src = "127.127.46.0"
                 elif src == "GPS1":
-                    src = "127.127.46.129"
+                    src = "127.127.46.1"
                 elif src == "GPS2":
-                    src = "127.127.46.130"
+                    src = "127.127.46.2"
+                elif src == "PPS0":
+                    src = "127.127.22.0"
+                elif src == "PPS1":
+                    src = "127.127.22.1"
+                elif src == "PPS2":
+                    src = "127.127.22.2"
 
                 # Bogus "status" and, sadly, missing "delay" (which is 0 here, its only in rawstats)
                 out.write("%d %d %s 9014 %.9f 0 %.9f %.9f\n" % (mjd, secs, src, -float(s[4]), float(s[5]), float(s[3])))
